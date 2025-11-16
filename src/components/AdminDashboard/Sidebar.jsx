@@ -61,6 +61,7 @@ export default function Sidebar({ onClose, isOpen = false, isDesktop = true }) {
             <span className="text-sm font-medium">Dashboard</span>
             <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-white/20 text-white border border-white/30">Live</span>
           </Link>
+          <Link href="/admin/pos" onClick={() => onClose?.()} className="group flex items-center gap-3 mt-1 px-2 py-2 rounded-md text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50 transition-colors">Point of Sale</Link>
           <Link href="/admin/Orders" onClick={() => onClose?.()} className="group flex items-center gap-3 mt-1 px-2 py-2 rounded-md text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50 transition-colors">Orders</Link>
           <Link href="/admin/MenuManagement" onClick={() => onClose?.()} className="group flex items-center gap-3 mt-1 px-2 py-2 rounded-md text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50 transition-colors">Products</Link>
           <Link href="/admin/Customers" onClick={() => onClose?.()} className="group flex items-center gap-3 mt-1 px-2 py-2 rounded-md text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50 transition-colors">Customers</Link>

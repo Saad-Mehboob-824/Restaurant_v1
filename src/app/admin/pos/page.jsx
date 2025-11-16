@@ -23,7 +23,7 @@ export default function POSPage() {
   useEffect(() => {
     const checkAuth = () => {
       if (!isAuthenticated()) {
-        window.location.href = '/EmpLogin?redirect=/admin/pos';
+        window.location.href = '/84588878l00o00g00i00n76580982';
       } else {
         setAuthChecked(true);
       }
@@ -147,7 +147,7 @@ export default function POSPage() {
                 } catch (e) {
                   console.error('Logout request failed', e)
                 } finally {
-                  window.location.href = '/EmpLogin'
+                  window.location.href = '/84588878l00o00g00i00n76580982'
                 }
               }}
               className="px-4 py-2 bg-red-100 text-red-600 border border-red-600 rounded-lg font-medium text-sm hover:bg-red-50 transition-colors"
