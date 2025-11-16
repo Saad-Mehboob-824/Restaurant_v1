@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getUserId } from "@/utils/auth/getCurrentUser";
 
 export default function POSOverlay({ products = [] } = {}) {
   const [cartItems, setCartItems] = useState([]);
@@ -177,18 +176,12 @@ export default function POSOverlay({ products = [] } = {}) {
       return;
     }
 
-    const userId = getUserId();
-    if (!userId) {
-      alert("User not authenticated. Please log in again.");
-      return;
-    }
-
     setProcessingPayment(true);
 
     try {
       // Prepare order payload
+      // Note: userId will be extracted from the JWT token on the server side
       const orderPayload = {
-        userId,
         customerName: "POS",
         name: "POS",
         phone: "",
