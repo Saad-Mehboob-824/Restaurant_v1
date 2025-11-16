@@ -5,7 +5,6 @@ import { ArrowLeft, ShoppingCart } from "lucide-react";
 import ProductSidebar from "@/components/POS/ProductSidebar";
 import POSProductGrid from "@/components/POS/POSProductGrid";
 import POSOverlay from "@/components/POS/POSOverlay";
-import { isAuthenticated } from "@/utils/auth/getCurrentUser";
 
 export default function POSPage() {
   const [categories, setCategories] = useState([]);
@@ -19,19 +18,30 @@ export default function POSPage() {
   const sectionRefs = useRef({});
   const gridRef = useRef(null);
 
-  // Check authentication
+  // Check authentication via API (server-side check)
   useEffect(() => {
-    const checkAuth = () => {
-      if (!isAuthenticated()) {
-        window.location.href = '/84588878l00o00g00i00n76580982';
-      } else {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ token: '' })
+        });
+        
+        if (!res.ok) {
+          window.location.href = '/84588878l00o00g00i00n76580982';
+          return;
+        }
+        
         setAuthChecked(true);
+      } catch (err) {
+        console.error('Auth check failed:', err);
+        window.location.href = '/84588878l00o00g00i00n76580982';
       }
     };
 
-    // Small delay to ensure token cookie is available
-    const timer = setTimeout(checkAuth, 100);
-    return () => clearTimeout(timer);
+    checkAuth();
   }, []);
 
   // Fetch categories
