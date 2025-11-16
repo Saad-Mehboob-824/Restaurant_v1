@@ -50,7 +50,7 @@ export function useWebSocket(onMessage, options = {}) {
       const protocol = isSecure ? 'wss:' : 'ws:'
       // Prefer explicit IPv4 loopback to avoid ::1 vs 127.0.0.1 mismatch during dev
       const host = window.location.hostname === 'localhost' ? '127.0.0.1:3002' : `${window.location.hostname}:3002`
-      const wsUrl = `${protocol}//${host}`
+      const wsUrl = isSecure ? 'wss://shelter-kits-meets-why.trycloudflare.com/' : 'ws://shelter-kits-meets-why.trycloudflare.com/'
 
       console.debug('[useWebSocket] creating global socket ->', wsUrl)
       const ws = new WebSocket(wsUrl)
