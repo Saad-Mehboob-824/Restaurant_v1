@@ -74,6 +74,7 @@ export async function POST(req) {
   try {
     const { getOrCreateDefaultRestaurant } = await import('../../../utils/getRestaurantId')
     const { createOrder, connectToDB } = await import('../../../services/db')
+    const { verify } = await import('jsonwebtoken')
     
     const body = await req.json()
     console.log('Received order request:', body)
@@ -85,6 +86,21 @@ export async function POST(req) {
 
     // Ensure DB connection is established
     await connectToDB()
+
+    // Extract userId from JWT token in cookie
+    let userId = null
+    try {
+      const tokenCookie = req.cookies?.get('token')?.value
+      if (tokenCookie) {
+        const decoded = verify(tokenCookie, process.env.JWT_SECRET)
+        userId = decoded.userId || null
+        console.log('Extracted userId from token:', userId)
+      }
+    } catch (tokenError) {
+      // Token verification failed - this is optional for order creation
+      // Orders can still be created without userId (for non-POS orders)
+      console.log('Token verification failed or no token:', tokenError.message)
+    }
 
     // Delegate order creation to service
     // Items should now have menuItemId (ObjectId) instead of menuItem (string name)
@@ -98,6 +114,7 @@ export async function POST(req) {
       customer: body.customer || undefined, // Support direct customer object
       type: orderType,
       branch: orderType === 'pickup' ? (body.branch || '') : '', // Location key for pickup orders
+      userId: userId, // Pass userId to order creation
       items: (body.items || []).map(item => ({
         menuItemId: item.menuItemId || item._id, // Use menuItemId (ObjectId) - required
         name: item.name || '', // Denormalized name for reference
